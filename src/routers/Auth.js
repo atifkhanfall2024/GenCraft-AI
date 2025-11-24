@@ -1,9 +1,9 @@
 const express = require('express')
-const { getData } = require('../controllers/AuthControllers')
+const { Signup } = require('../controllers/AuthControllers')
 const Auth = express.Router()
 
 
-Auth.get('/getdata' , getData)
+Auth.post('/Auth/Signup' , Signup)
 
 
 

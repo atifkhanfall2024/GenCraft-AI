@@ -1,15 +1,20 @@
-const getData = async(req,res)=>{
-try{
+const UserModel = require('../models/UserSchema')
+const Signup = async(req,res)=>{
 
- const name = "Muhammad Atif khan"
- const age = 22
+    try{
+         const {fullName , email , password} = req.body
 
-res.send(name + age )
+   await UserModel.create({
+    fullName , email , password
+   })
 
-}catch(err){
-    res.send(err.message)
+   res.status(200).json({message: ` ${fullName} Signup SuccessFully `})
+
+    }catch(err){
+          res.status(501).json({message:  err.message})
+    }
+
 }
-}
 
 
-module.exports = {getData}
+module.exports = {Signup}
