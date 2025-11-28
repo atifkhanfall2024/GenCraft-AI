@@ -1,9 +1,18 @@
 const express = require('express')
 const Database_Connection = require('./config/Db')
 const AuthRoute = require('./routers/Auth')
+const session = require('express-session');
 const app = express()
+require('dotenv').config()
 
 app.use(express.json())
+app.use(session({
+    secret: process.env.SESSION_SECRET, // required
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 60000 } // session valid for 1 min (example)
+}));
+
 app.use('/' , AuthRoute)
 
 

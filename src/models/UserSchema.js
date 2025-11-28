@@ -39,8 +39,10 @@ photoUrl:{
 isVerifed:{
     type:Boolean,
     default:false
+} ,
+Otp:{
+   type:String
 }
-
  } , {timestamps:true})
 
 
