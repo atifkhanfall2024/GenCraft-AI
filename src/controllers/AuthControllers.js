@@ -1,6 +1,7 @@
 const UserModel = require('../models/UserSchema')
 const SendOtp = require('../utils/mail')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
 const Signup = async(req,res)=>{
@@ -85,4 +86,87 @@ const OtpVerify = async(req,res)=>{
 // Signup with google 
 
 
-module.exports = {Signup , OtpVerify}
+const SignupGoogle = async(req,res)=>{
+
+    try{
+         const {fullName , email} = req.body
+
+    
+ if(email === process.env.Email){
+      return res.status(501).json({message:"You cannot send otp to yourself"})
+ }
+
+   await UserModel.create({
+    fullName , email ,
+     isGoogleUser:true
+   })
+  // to store session email
+    req.session.email = email
+   //console.log( 'email' , req.session.email);
+ 
+
+   
+
+ return  res.status(200).json({message: ` ${fullName} . Signup Success. `})
+
+    }catch(err){
+         return  res.status(501).json({message:  err.message})
+    }
+
+}
+
+
+
+// working with login Api
+
+const Login = async(req,res)=>{
+      try{
+
+  const {email  , Userpassword} = req.body
+
+  const User = await UserModel.findOne({email:email})
+  if(!User){
+      return res.status(401).json({message:'Invalid Credantials......'})
+  }
+
+  // also check passward 
+
+  const VerifyPassward = await bcrypt.compare(Userpassword , User.password)
+  if(!VerifyPassward){
+       return res.status(401).json({message:'Invalid Credantials......'})
+  }
+
+  // now make cookies
+
+  const token = jwt.sign({_id:User._id} , process.env.Jwt_Passward , {expiresIn:'1d'}) 
+  //console.log(token);
+
+ res.cookie("token", token, {
+    httpOnly: true,        
+    secure: true,          
+    sameSite: "strict"     
+});
+
+  return res.status(200).json({message:`${User.fullName}  Login Success.....`})
+
+
+      }catch(err){
+        return res.status(401).json({message:err.message})
+      }
+}
+
+// logout api
+
+const Logout = async(req,res)=>{
+
+      try{
+
+            res.clearCookie('token').status(200).json({message:'Logout Success'})
+
+      }catch(err){
+   return res.status(401).json({message:err.message})
+      }
+}
+
+
+module.exports = {Signup , OtpVerify ,SignupGoogle , Login , Logout}

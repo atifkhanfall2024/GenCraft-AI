@@ -42,6 +42,10 @@ isVerifed:{
 } ,
 Otp:{
    type:String
+},
+isGoogleUser:{
+    type:Boolean,
+    default:false
 }
  } , {timestamps:true})
 

@@ -1,10 +1,13 @@
 const express = require('express')
-const { Signup, OtpVerify } = require('../controllers/AuthControllers')
+const { Signup, OtpVerify, SignupGoogle, Login, Logout } = require('../controllers/AuthControllers')
 const Auth = express.Router()
 
 
 Auth.post('/Auth/Signup' , Signup)
+Auth.post('/Auth/Login' , Login)
+Auth.post('/Auth/Logout' ,Logout)
 Auth.post('/otp/verify' , OtpVerify)
+Auth.post('/Signup/Google' , SignupGoogle)
 
 
 
