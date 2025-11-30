@@ -134,7 +134,9 @@ const Login = async(req,res)=>{
   if(!User){
       return res.status(401).json({message:'Invalid Credantials......'})
   }
-
+   if(User.isVerifed === false){
+      return res.status(401).json({message: ' First Signup Verfiy Account  with otp then Login'})
+   }
   // also check passward 
 
   const VerifyPassward = await bcrypt.compare(Userpassword , User.password)
