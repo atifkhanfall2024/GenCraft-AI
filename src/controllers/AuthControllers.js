@@ -2,6 +2,7 @@ const UserModel = require('../models/UserSchema')
 const SendOtp = require('../utils/mail')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const validator = require('validator')
 require('dotenv').config()
 
 const Signup = async(req,res)=>{
@@ -12,8 +13,13 @@ const Signup = async(req,res)=>{
      // generate otp
       const otp = Math.floor(100000 + Math.random() * 900000);
        
-     
+     if(!validator.isStrongPassword(Userpassword)){
+            return res.status(401).json({message:"Passward Should Be Strong"})
+     }
 
+     if(!validator.isEmail(email)){
+           return res.status(401).json({message:"Email is Incorrect"})
+     }
       // store hashes otp in database
   const Hashotp = await bcrypt.hash(String(otp) , 10)
  const password = await bcrypt.hash(Userpassword , 10)

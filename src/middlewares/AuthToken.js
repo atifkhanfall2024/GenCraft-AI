@@ -7,7 +7,7 @@ try{// first we need to get token from cookies
 const {token} = req.cookies
 //console.log(token);
 if(!token){
-    return res.status(401).json({message:'Please Login ......'})
+    return res.status(401).json({message:'Token is not present . Please Login ......'})
 }
 
 const Verify = jwt.verify(token , process.env.Jwt_Passward)
