@@ -4,6 +4,7 @@ const AuthRoute = require('./routers/Auth')
 const session = require('express-session');
 const cookie_parser = require('cookie-parser')
 const cors = require('cors')
+const ProfileRoute = require('./routers/profileRoute')
 const app = express()
 require('dotenv').config()
 
@@ -22,10 +23,11 @@ app.use(session({
     secret: process.env.SESSION_SECRET, // required
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 60000 } // session valid for 1 min (example)
+    cookie: { maxAge: 120000 } // session valid for 2 min (example)
 }));
 
 app.use('/' , AuthRoute)
+app.use('/' , ProfileRoute)
 
 
 Database_Connection().then(()=>{
