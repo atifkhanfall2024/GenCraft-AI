@@ -95,22 +95,38 @@ const OtpVerify = async(req,res)=>{
 const SignupGoogle = async(req,res)=>{
 
     try{
-         const {fullName , email} = req.body
+         const {fullName , email , photoUrl} = req.body
 
     
  if(email === process.env.Email){
       return res.status(501).json({message:"You cannot send otp to yourself"})
  }
 
-   await UserModel.create({
-    fullName , email ,
+ const users = await UserModel.findOne({email})
+ if(!users){
+    await UserModel.create({
+    fullName , email ,photoUrl,
      isGoogleUser:true
    })
+ }
+
+ const token = jwt.sign({_id:users.id} , process.env.Jwt_Passward , {expiresIn:'1d'}) 
+  //console.log(token);
+
+ res.cookie("token", token, {
+    httpOnly: true,        
+    secure: true,          
+    sameSite: "strict"     
+});
+
+
+  
   // to store session email
     req.session.email = email
    //console.log( 'email' , req.session.email);
- 
 
+ 
+  
    
 
  return  res.status(200).json({message: ` ${fullName} . Signup Success. `})

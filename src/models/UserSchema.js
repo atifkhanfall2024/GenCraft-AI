@@ -19,7 +19,7 @@ email:{
 },
 password:{
     type:String,
-    required:true,
+    //required:true,
      minlength: [6, "passward must be at least 6 characters long"],
     validate(value){
         if(!valid.isStrongPassword(value)){
