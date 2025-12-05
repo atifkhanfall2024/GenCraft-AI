@@ -43,6 +43,18 @@ isVerifed:{
 Otp:{
    type:String
 },
+phoneNumber:{
+   type: String,
+   // required: [true, "Phone number is required"],
+    match: [
+      /^(?:\+92|0)?3\d{2}\d{7}$/,
+      "Invalid Pakistan phone number"
+    ],
+},
+description:{
+    type:String
+} ,
+
 isGoogleUser:{
     type:Boolean,
     default:false
