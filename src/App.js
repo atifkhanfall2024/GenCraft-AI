@@ -5,6 +5,7 @@ const session = require('express-session');
 const cookie_parser = require('cookie-parser')
 const cors = require('cors')
 const ProfileRoute = require('./routers/profileRoute')
+const ChatRoute  = require('./routers/ChatRoute')
 const app = express()
 require('dotenv').config()
 
@@ -28,6 +29,7 @@ app.use(session({
 
 app.use('/' , AuthRoute)
 app.use('/' , ProfileRoute)
+app.use('/' , ChatRoute)
 
 
 Database_Connection().then(()=>{
